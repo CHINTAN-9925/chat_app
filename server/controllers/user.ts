@@ -37,12 +37,72 @@ export const allUsers = async (req: AuthenticatedRequest, res: Response) => {
 //@description     Register new user
 //@route           POST /api/user/
 //@access          Public
+// export const register = async (req: AuthenticatedRequest, res: Response) => {
+//     const { name, email, password, pic} = req.body;
+//     console.log(name, email, password, pic);
+//     if (!name || !email || !password) {
+//         return res.json({
+//             message: "plaese enter all the required fields",
+//             status: 400,
+//         });
+//     }
+
+//     try {
+//         const userExists = await User.findOne({ email });
+
+//         if (userExists) {
+//             return res.json({
+//                 message: "user already exists",
+//                 status: 409,
+//             });
+//         }
+
+//         const user: any = await User.create({
+//             name,
+//             email,
+//             password,
+//             pic,
+//         });
+
+//         if (user) {
+//             res.status(201).json({
+//                 message: "user created successfully",
+//                 status: 201,
+//                 data: {
+//                     _id: user._id,
+//                     name: user.name,
+//                     email: user.email,
+//                     isAdmin: user.isAdmin,
+//                     pic: user.pic,
+//                     token: generateToken(user._id),
+//                 }
+//             });
+//         } else {
+//             return res.json({
+//                 message: "user not created",
+//                 status: 400,
+//             });
+//         }
+//     } catch (error: any) {
+//         if (error.code === 11000) {
+//             return res.json({
+//                 message: "user already exists",
+//                 status: 409,
+//             });
+//         }
+//         return res.json({
+//             message: error.message,
+//             status: 500,
+//         })
+//     }
+// };
 export const register = async (req: AuthenticatedRequest, res: Response) => {
     const { name, email, password, pic } = req.body;
     console.log(name, email, password, pic);
+
     if (!name || !email || !password) {
-        return res.json({
-            message: "plaese enter all the required fields",
+        return res.status(400).json({
+            message: "Please enter all the required fields",
             status: 400,
         });
     }
@@ -52,21 +112,29 @@ export const register = async (req: AuthenticatedRequest, res: Response) => {
 
         if (userExists) {
             return res.json({
-                message: "user already exists",
+                message: "User already exists",
                 status: 409,
             });
+        }
+
+        // Convert pic to string if it's an object
+        let picUrl: string | undefined;
+        if (typeof pic === 'object' && pic !== null) {
+            picUrl = pic.toString(); // You may need to adjust this depending on the structure of your pic object
+        } else {
+            picUrl = pic; // Assuming pic is already a string
         }
 
         const user: any = await User.create({
             name,
             email,
             password,
-            pic,
+            pic: picUrl, // Assign the converted pic value
         });
 
         if (user) {
             res.status(201).json({
-                message: "user created successfully",
+                message: "User created successfully",
                 status: 201,
                 data: {
                     _id: user._id,
@@ -78,24 +146,25 @@ export const register = async (req: AuthenticatedRequest, res: Response) => {
                 }
             });
         } else {
-            return res.json({
-                message: "user not created",
+            return res.status(400).json({
+                message: "User not created",
                 status: 400,
             });
         }
     } catch (error: any) {
         if (error.code === 11000) {
             return res.json({
-                message: "user already exists",
+                message: "User already exists",
                 status: 409,
             });
         }
-        return res.json({
+        return res.status(500).json({
             message: error.message,
             status: 500,
         })
     }
 };
+
 
 //@description     Auth the user
 //@route           POST /api/users/login
@@ -141,21 +210,32 @@ export const login = async (req: AuthenticatedRequest, res: Response) => {
 
 export const addPicUrl = async (req: AuthenticatedRequest, res: Response) => {
     const { id, pic } = req.body;
+    console.log("addPicUrl", id, typeof id, pic, typeof pic);
     try {
         const user: any = await User.findById(id);
         if (!user) {
             return res.json({
-                message: "user not found",
+                message: "User not found",
                 status: 404,
             });
         }
-        user.pic = pic;
-        await user.save();
+         // Assuming pic is already a string URL
+        const userUpdated = await User.findByIdAndUpdate(id, {
+            $set: {
+                pic: pic
+            }
+        })
+        return res.status(200).json({
+            message: "User updated successfully",
+            status: 200,
+            data:userUpdated
+        });
     } catch (error: any) {
         return res.json({
             message: error.message,
             status: 500,
-        })
+        });
     }
-}
+};
+
 
