@@ -2,11 +2,13 @@ import { Box, Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/r
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useToast } from '@chakra-ui/react'
+import { useRouter } from "next/navigation"
 
 type Props = {}
 
 const Login = (props: Props) => {
     const toast = useToast();
+    const router = useRouter();
     const [input, serInput] = useState({
         email: "",
         password: ""
@@ -21,7 +23,6 @@ const Login = (props: Props) => {
     const submithandler = async (event: any) => {
         event.preventDefault();
         try {
-            // const response = await axios.post("http://127.0.0.1:4000/api/user/login", input, {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/login`, input, {
                 headers: {
                     "Content-Type": "application/json",
@@ -47,7 +48,6 @@ const Login = (props: Props) => {
                     position: "bottom",
                 })
             }
-            // console.log(response.data.token);
             if (response.data.message === "user logged in successfully") {
                 toast({
                     title: "user logged in successfully",
@@ -57,6 +57,8 @@ const Login = (props: Props) => {
                     position: "bottom",
                 })
                 localStorage.setItem("token", response.data.data.token);
+                localStorage.setItem("userInfo", JSON.stringify(response.data.data))
+                router.push("/chats")
             }
         } catch (error: any) {
             console.error("Error:", error.message);

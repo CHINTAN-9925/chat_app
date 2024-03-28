@@ -219,7 +219,6 @@ export const addPicUrl = async (req: AuthenticatedRequest, res: Response) => {
                 status: 404,
             });
         }
-         // Assuming pic is already a string URL
         const userUpdated = await User.findByIdAndUpdate(id, {
             $set: {
                 pic: pic

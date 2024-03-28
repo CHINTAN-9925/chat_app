@@ -8,7 +8,7 @@ import User from "../models/userModels";
 //@access          Protected
 export const accessChat = async (req: AuthenticatedRequest, res: Response) => {
     const { userId } = req.body;
-
+    console.log("userId from access all chats route", userId)
     if (!userId) {
         return res.status(400).json({
             message: "Please add a user ID",

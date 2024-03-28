@@ -11,9 +11,9 @@ export type UserType = {
 
 const userSchema = new mongoose.Schema<UserType>(
     {
-        name: { type: String, required: true },
-        email: { type: String, unique: true, required: true },
-        password: { type: String, required: true },
+        name: { type: String, required: true, trim: true },
+        email: { type: String, unique: true, required: true, trim: true },
+        password: { type: String, required: true, trim: true },
         pic: {
             type: String,
             required: false,
@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema<UserType>(
     }
 );
 
-userSchema.methods.matchPassword = async function (enteredPassword:string) {
+userSchema.methods.matchPassword = async function (enteredPassword: string) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
 
