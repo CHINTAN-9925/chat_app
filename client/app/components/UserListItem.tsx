@@ -12,10 +12,11 @@ const UserListItem = ({ user, handleFunction }: Props) => {
             <Avatar name={user.name} src={user.pic} cursor={"pointer"} size={"sm"} />
             <Box>
                 <Text>{user.name}</Text>
+                <Text>{user.name}</Text>
                 <Text fontSize={"xs"}>
-                    <b>
-                        Email :
-                    </b>{user.email}</Text>
+                    Email :
+                    {user.email}
+                </Text>
             </Box>
         </Box>
     )

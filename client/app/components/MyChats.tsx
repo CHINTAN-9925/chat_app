@@ -76,7 +76,6 @@ const MyChats = (props: Props) => {
                                 <Text>
                                     {!chat.isGroupChat ? getSender(loggedUser, chat.users) : chat.chatName}
                                 </Text>
-                                hi
                             </Box>
                         ))}
                     </Stack>
