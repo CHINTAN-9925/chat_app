@@ -1,7 +1,6 @@
-import { FormControl, Button, FormLabel, Input, VStack } from '@chakra-ui/react'
-import React, { useState, useEffect } from 'react'
-import { useToast } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, VStack, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { headers } from '../utils';
 
 type Props = {}

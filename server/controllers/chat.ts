@@ -147,7 +147,7 @@ export const renameGroup = async (req: AuthenticatedRequest, res: Response) => {
             .populate("groupAdmin", "-password");
 
         if (!updatedChat) {
-            return res.status(404).json({
+            return res.json({
                 message: "Chat Not Found",
                 status: 404
             })
@@ -159,7 +159,7 @@ export const renameGroup = async (req: AuthenticatedRequest, res: Response) => {
             });
         }
     } catch (error: any) {
-        return res.status(500).json({
+        return res.json({
             message: error.message,
             status: 500
         })
@@ -171,30 +171,16 @@ export const renameGroup = async (req: AuthenticatedRequest, res: Response) => {
 // @access  Protected
 export const leaveGroup = async (req: AuthenticatedRequest, res: Response) => {
     const { chatId, userId } = req.body;
+    console.log(chatId, userId);
 
     try {
 
         const chat: any = await Chat.findById(chatId);
         if (!chat) {
-            return res.status(404).json({
+            return res.json({
                 message: "Chat Not Found",
                 status: 404
             })
-        }
-        if (!chat.musers.includes(userId)) {
-            return res.status(400).json({
-                message: "User Not Found In Chat",
-                status: 400
-            })
-        }
-        if (chat.groupAdmin.toString() === userId.toString()) {
-
-            const usersWithoutAdmin = chat.users.filter((user: any) => user.toString() !== userId.toString());
-            const randomIndex = Math.floor(Math.random() * usersWithoutAdmin.length);
-            const newGroupAdmin = usersWithoutAdmin[randomIndex];
-            chat.groupAdmin = newGroupAdmin;
-            chat.save();
-
         }
 
         const removed = await Chat.findByIdAndUpdate(
@@ -210,7 +196,7 @@ export const leaveGroup = async (req: AuthenticatedRequest, res: Response) => {
             .populate("groupAdmin", "-password");
 
         if (!removed) {
-            return res.status(404).json({
+            return res.json({
                 message: "Chat Not Found",
                 status: 404
             });
@@ -222,7 +208,7 @@ export const leaveGroup = async (req: AuthenticatedRequest, res: Response) => {
             });
         }
     } catch (error: any) {
-        return res.status(500).json({
+        return res.json({
             message: error.message,
             status: 500
         })
@@ -240,16 +226,9 @@ export const joinGroup = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const chat = await Chat.findById(chatId);
         if (!chat) {
-            return res.status(404).json({
+            return res.json({
                 message: "Chat Not Found",
                 status: 404
-            })
-        }
-
-        if (chat.users.includes(userId)) {
-            return res.status(400).json({
-                message: "User Already In Group",
-                status: 400
             })
         }
 
@@ -266,7 +245,7 @@ export const joinGroup = async (req: AuthenticatedRequest, res: Response) => {
             .populate("groupAdmin", "-password");
 
         if (!added) {
-            return res.status(404).json({
+            return res.json({
                 message: "Chat Not Found",
                 status: 404
             })
@@ -278,7 +257,7 @@ export const joinGroup = async (req: AuthenticatedRequest, res: Response) => {
             });
         }
     } catch (error: any) {
-        return res.status(500).json({
+        return res.json({
             message: error.message,
             status: 500
         })

@@ -1,12 +1,11 @@
-import { Box, Button, Tooltip, Text, Avatar, Menu, MenuButton, MenuList, MenuItem, MenuDivider, Drawer, DrawerOverlay, useDisclosure, DrawerContent, DrawerHeader, DrawerBody, Input, Spinner } from '@chakra-ui/react';
-import React, { useState } from 'react'
-import { ChatState } from '../context/ChatProvider';
-import ProfileModel from './ProfileModel';
-import { useRouter } from 'next/navigation';
+import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { ChatState } from '../context/ChatProvider';
 import { headers } from '../utils';
-import { useToast } from '@chakra-ui/react';
 import ChatLoading from './ChatLoading';
+import ProfileModel from './ProfileModel';
 import UserListItem from './UserListItem';
 
 type Props = {}
@@ -164,8 +163,7 @@ const SideDrawer = (props: Props) => {
                             ) : (
                                 searchResult?.map((user: any) => (
                                     <UserListItem key={user._id} user={user} handleFunction={() => accessChat(user._id)} />
-                                ))
-                            )
+                                )))
                         }
                         {loadingChats && <Spinner ml={"auto"} display={"flex"} />}
                     </DrawerBody>

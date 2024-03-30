@@ -21,6 +21,7 @@ export const allUsers = async (req: AuthenticatedRequest, res: Response) => {
 
     try {
         const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+        console.log("into allusers")
         return res.status(200).json({
             message: "user data fetched successfully",
             status: 200,

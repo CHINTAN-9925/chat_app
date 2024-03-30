@@ -1,5 +1,5 @@
-import { Avatar, Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, Text } from '@chakra-ui/react'
-import React from 'react'
+import { Avatar, Box, Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Text, useDisclosure } from '@chakra-ui/react';
+import React from 'react';
 
 type Props = {
     children?: React.ReactNode;

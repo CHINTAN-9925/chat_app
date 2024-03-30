@@ -1,8 +1,7 @@
-import { Box, Button, FormControl, FormLabel, Input, VStack } from '@chakra-ui/react'
+import { Button, FormControl, FormLabel, Input, VStack, useToast } from '@chakra-ui/react'
 import axios from 'axios'
-import React, { useState } from 'react'
-import { useToast } from '@chakra-ui/react'
 import { useRouter } from "next/navigation"
+import { useState } from 'react'
 
 type Props = {}
 
