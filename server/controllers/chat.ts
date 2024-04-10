@@ -44,7 +44,7 @@ export const accessChat = async (req: AuthenticatedRequest, res: Response) => {
             const FullChat = await Chat.findOne({ _id: createdChat._id }).populate(
                 "users",
                 "-password"
-            );
+            )?.populate("latestMessage");
             return res.status(200).json({
                 message: "New Chat Created",
                 status: 200,

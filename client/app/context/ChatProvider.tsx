@@ -1,7 +1,6 @@
 "use client"
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useRouter } from "next/navigation"
-import { userInfo } from 'os';
 
 type Props = {
     children: React.ReactNode;
@@ -12,7 +11,7 @@ const ChatContext = createContext({})
 const ChatProvider = ({ children }: Props) => {
     const [user, setUser] = useState({});
     const [selectedChat, setSelectedChat] = useState();
-    const [chatState, setChatState] = useState<Array<any>>([{}]);
+    const [chatState, setChatState] = useState<Array<any>>([]);
     const router = useRouter()
 
     useEffect(() => {

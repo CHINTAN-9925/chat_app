@@ -38,6 +38,7 @@ const MyChats = ({ fetchAgain }: Props) => {
             console.log('Authorization Header:', config.headers.Authorization);
 
             const response = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/chat`, config);
+            console.log({ response })
             console.log('Fetched chats:', response.data);
             setChatState(response.data);
         } catch (err: any) {
@@ -53,15 +54,21 @@ const MyChats = ({ fetchAgain }: Props) => {
         }
     };
 
-
     useEffect(() => {
         console.log('Inside MyChats component');
         const user = localStorage.getItem('userInfo');
-        setLoggedUser(user ? JSON.parse(user) : {});
-        console.log('Logged user:', loggedUser);
-        console.log('Chat state:', chatState);
+        console.log({ user });
+        const parsedUser = user ? JSON.parse(user) : null;
+        console.log("Logged user:", parsedUser);
+        setLoggedUser(parsedUser);
         fetchChats();
     }, [fetchAgain]);
+
+    // useEffect(() => {
+    //     console.log('Logged user FROM STATE:', loggedUser);
+    //     console.log('Chat state:', chatState);
+    // }, [loggedUser, chatState]);
+
 
     return (
         <Box display={{ base: selectedChat ? 'none' : 'flex', md: 'flex' }} flexDir="column" p={3} bg="white" w={{ base: '100%', md: '31%' }} borderRadius="lg" borderWidth="1px" bgColor="#E8E8E8">
@@ -74,8 +81,59 @@ const MyChats = ({ fetchAgain }: Props) => {
                     </Button>
                 </GroupChatModel>
             </Box>
+            {/* <Box display="flex" flexDir="column" p={3} bg="#E8E8E8" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
+                {chatState ? (
+                    <Stack overflowY="scroll">
+                        {chatState.map((chat: any) => (
+                            <Box onClick={() => setSelectedChat(chat)} cursor="pointer" bg={selectedChat === chat._id ? 'teal.100' : 'white'} color={selectedChat === chat._id ? 'black' : 'black'} px={3} py={2} borderRadius="lg" key={chat._id}>
+                                <Text>
+                                    {!chat.isGroupChat ? getSender(loggedUser, chat.users) : chat.chatName}
+                                </Text>
+                                {
+                                    chat.latestMessage ? (
+                                        <Text fontSize={"12px"}>
+                                            {chat.latestMessage}
+                                        </Text>
+                                    ) : "hi"
+                                }
+                            </Box>
+                        ))}
+                    </Stack>
+                ) : (
+                    <ChatLoading />
+                )}
+            </Box> */}
             <Box display="flex" flexDir="column" p={3} bg="#E8E8E8" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
                 {chatState ? (
+                    <Stack overflowY="scroll">
+                        {chatState.map((chat: any) => (
+                            <Box
+                                key={chat._id}
+                                onClick={() => setSelectedChat(chat)}
+                                cursor="pointer"
+                                bg={selectedChat === chat._id ? 'teal.100' : 'white'}
+                                color={selectedChat === chat._id ? 'black' : 'black'}
+                                px={3}
+                                py={2}
+                                borderRadius="lg"
+                            >
+                                <Text>
+                                    {!chat.isGroupChat ? getSender(loggedUser, chat.users) : chat.chatName}
+                                </Text>
+                                {/* {chat.latestMessage && (
+                                    <Text fontSize="12px">{chat.latestMessage}</Text>
+                                )} */}
+                            </Box>
+                        ))}
+                    </Stack>
+                ) : (
+                    <ChatLoading />
+                )}
+            </Box>
+
+
+            {/* <Box display="flex" flexDir="column" p={3} bg="#E8E8E8" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
+                {Array.isArray(chatState) && chatState.length > 0 ? (
                     <Stack overflowY="scroll">
                         {chatState.map((chat: any) => (
                             <Box onClick={() => setSelectedChat(chat)} cursor="pointer" bg={selectedChat === chat._id ? 'teal.100' : 'white'} color={selectedChat === chat._id ? 'black' : 'black'} px={3} py={2} borderRadius="lg" key={chat._id}>
@@ -95,7 +153,8 @@ const MyChats = ({ fetchAgain }: Props) => {
                 ) : (
                     <ChatLoading />
                 )}
-            </Box>
+            </Box> */}
+
         </Box>
     );
 };
