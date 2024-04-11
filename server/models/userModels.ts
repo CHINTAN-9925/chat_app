@@ -11,7 +11,7 @@ export type UserType = {
 
 const userSchema = new mongoose.Schema<UserType>(
     {
-        name: { type: String, required: true, trim: true },
+        name: { type: String, required: true, trim: true, unique: false },
         email: { type: String, unique: true, required: true, trim: true },
         password: { type: String, required: true, trim: true },
         pic: {

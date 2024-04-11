@@ -20,7 +20,6 @@ const MyChats = ({ fetchAgain }: Props) => {
     const fetchChats = async () => {
         try {
             const token = localStorage.getItem('token');
-            // const user = localStorage.getItem('userInfo');
             console.log({ token })
             if (!token) {
                 console.error('User token is missing');
@@ -64,12 +63,6 @@ const MyChats = ({ fetchAgain }: Props) => {
         fetchChats();
     }, [fetchAgain]);
 
-    // useEffect(() => {
-    //     console.log('Logged user FROM STATE:', loggedUser);
-    //     console.log('Chat state:', chatState);
-    // }, [loggedUser, chatState]);
-
-
     return (
         <Box display={{ base: selectedChat ? 'none' : 'flex', md: 'flex' }} flexDir="column" p={3} bg="white" w={{ base: '100%', md: '31%' }} borderRadius="lg" borderWidth="1px" bgColor="#E8E8E8">
             <Box pb={3} px={3} fontSize={{ base: '28px', md: '30px' }} display="flex" alignItems="center" textAlign="center" w="100%" bg="teal" justifyContent="space-between" borderRadius="lg">
@@ -81,28 +74,7 @@ const MyChats = ({ fetchAgain }: Props) => {
                     </Button>
                 </GroupChatModel>
             </Box>
-            {/* <Box display="flex" flexDir="column" p={3} bg="#E8E8E8" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
-                {chatState ? (
-                    <Stack overflowY="scroll">
-                        {chatState.map((chat: any) => (
-                            <Box onClick={() => setSelectedChat(chat)} cursor="pointer" bg={selectedChat === chat._id ? 'teal.100' : 'white'} color={selectedChat === chat._id ? 'black' : 'black'} px={3} py={2} borderRadius="lg" key={chat._id}>
-                                <Text>
-                                    {!chat.isGroupChat ? getSender(loggedUser, chat.users) : chat.chatName}
-                                </Text>
-                                {
-                                    chat.latestMessage ? (
-                                        <Text fontSize={"12px"}>
-                                            {chat.latestMessage}
-                                        </Text>
-                                    ) : "hi"
-                                }
-                            </Box>
-                        ))}
-                    </Stack>
-                ) : (
-                    <ChatLoading />
-                )}
-            </Box> */}
+
             <Box display="flex" flexDir="column" p={3} bg="#E8E8E8" w="100%" h="100%" borderRadius="lg" overflowY="hidden">
                 {chatState ? (
                     <Stack overflowY="scroll">
@@ -111,8 +83,8 @@ const MyChats = ({ fetchAgain }: Props) => {
                                 key={chat._id}
                                 onClick={() => setSelectedChat(chat)}
                                 cursor="pointer"
-                                bg={selectedChat === chat._id ? 'teal.100' : 'white'}
-                                color={selectedChat === chat._id ? 'black' : 'black'}
+                                bg={selectedChat === chat._id ? 'teal.500' : 'white'}
+                                color={selectedChat === chat._id ? 'green' : 'black'}
                                 px={3}
                                 py={2}
                                 borderRadius="lg"
@@ -120,9 +92,10 @@ const MyChats = ({ fetchAgain }: Props) => {
                                 <Text>
                                     {!chat.isGroupChat ? getSender(loggedUser, chat.users) : chat.chatName}
                                 </Text>
-                                {/* {chat.latestMessage && (
+
+                                {/* {chat.latestMessage?  (
                                     <Text fontSize="12px">{chat.latestMessage}</Text>
-                                )} */}
+                                ): null} */}
                             </Box>
                         ))}
                     </Stack>

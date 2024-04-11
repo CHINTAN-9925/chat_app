@@ -43,8 +43,8 @@ const GroupChatModel = ({ children }: Props) => {
                 },
             };
             const { data } = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user?search=${search}`, config)
-            console.log(data)
-            console.log(data.data)
+            // console.log(data)
+            // console.log(data.data)
             setLoading(false)
             setSearchResult(data.data)
 
@@ -82,8 +82,8 @@ const GroupChatModel = ({ children }: Props) => {
                 name: groupChatNAme,
                 users: JSON.stringify(selectedUsers.map((u: any) => u._id)),
             }, config)
-            console.log(data)
-            console.log(data.data)
+            // console.log(data)
+            // console.log(data.data)
             setChatState([data.data, ...chatState])
             onClose()
             if (data.message === 'Group Chat Created Successfully') {

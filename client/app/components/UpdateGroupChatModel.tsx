@@ -10,9 +10,10 @@ import UserListItem from './UserListItem';
 type Props = {
     fetchAgain: boolean
     setFetchAgain: (fetchAgain: boolean) => void
+    fetchMessages: () => void
 }
 
-const UpdateGroupChatModel = ({ fetchAgain, setFetchAgain }: Props) => {
+const UpdateGroupChatModel = ({ fetchAgain, setFetchAgain,fetchMessages }: Props) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { user, selectedChat, setSelectedChat } = ChatState();
     const [groupChatName, setGroupChatName] = useState("");
@@ -53,6 +54,7 @@ const UpdateGroupChatModel = ({ fetchAgain, setFetchAgain }: Props) => {
 
             user1._id === user._id ? setSelectedChat() : setSelectedChat(data);
             setFetchAgain(!fetchAgain);
+            fetchMessages();
             setLoading(false);
         } catch (error: any) {
             toast({

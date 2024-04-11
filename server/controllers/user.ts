@@ -110,27 +110,27 @@ export const register = async (req: AuthenticatedRequest, res: Response) => {
 
     try {
         const userExists = await User.findOne({ email });
-
+        console.log("userExists", userExists)
         if (userExists) {
+            console.log("user already exists");
             return res.json({
                 message: "User already exists",
                 status: 409,
             });
         }
 
-        // Convert pic to string if it's an object
         let picUrl: string | undefined;
         if (typeof pic === 'object' && pic !== null) {
-            picUrl = pic.toString(); // You may need to adjust this depending on the structure of your pic object
+            picUrl = pic.toString();
         } else {
-            picUrl = pic; // Assuming pic is already a string
+            picUrl = pic; 
         }
 
         const user: any = await User.create({
             name,
             email,
             password,
-            pic: picUrl, // Assign the converted pic value
+            pic: picUrl, 
         });
 
         if (user) {
@@ -153,6 +153,7 @@ export const register = async (req: AuthenticatedRequest, res: Response) => {
             });
         }
     } catch (error: any) {
+        console.log({error})
         if (error.code === 11000) {
             return res.json({
                 message: "User already exists",
@@ -228,7 +229,7 @@ export const addPicUrl = async (req: AuthenticatedRequest, res: Response) => {
         return res.status(200).json({
             message: "User updated successfully",
             status: 200,
-            data:userUpdated
+            data: userUpdated
         });
     } catch (error: any) {
         return res.json({
