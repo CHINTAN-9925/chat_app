@@ -8,7 +8,6 @@ import ChatLoading from './ChatLoading';
 import ProfileModel from './ProfileModel';
 import UserListItem from './UserListItem';
 import { getSender } from '../utils/chatLogic';
-import NotificationBadge from 'react-notification-badge';
 
 type Props = {}
 
@@ -24,31 +23,6 @@ const SideDrawer = (props: Props) => {
     const toast = useToast();
 
     const { user, setSelectedChat, chatState, setChatState, notification, setNotification } = ChatState();
-    // useEffect(() => {
-    //     const newNotifications = notification.filter(
-    //         (notif: any) => notif.sender._id !== user._id
-    //     );
-    //     setNotificationCount(newNotifications.length);
-    // }, [notification, user._id]);
-    // const notificationCountHandler = (noti: any) => {
-    //     // Create an array to store unique sender IDs
-    //     const uniqueSenders: string[] = [];
-
-    //     // Filter the notifications to include only unique senders
-    //     const uniqueNotifications = noti.filter((notif: any) => {
-    //         // Check if the sender ID is not already in the uniqueSenders array
-    //         if (!uniqueSenders.includes(notif.sender._id)) {
-    //             // If it's not in the array, add it and return true to include this notification
-    //             uniqueSenders.push(notif.sender._id);
-    //             return true;
-    //         }
-    //         // If the sender ID is already in the array, return false to exclude this notification
-    //         return false;
-    //     });
-
-    //     // Return the count of unique notifications
-    //     return uniqueNotifications.length;
-    // };
 
     const logoutHandler = () => {
         localStorage.removeItem("userInfo");
@@ -157,10 +131,34 @@ const SideDrawer = (props: Props) => {
                 <Box display={"flex"} gap={5} p={2} alignItems={"center"}>
                     <Menu>
                         <MenuButton>
-                            <NotificationBadge count={notification.length} color={"teal"} size={"sm"} />
+                            {/* <Badge count={notification.length} color={"teal"} size={"sm"} /> */}
+                            {/* <Badge content=`${notification.length}` color="warning" variant="flat">
                             <Box>
                                 <i className="fa-solid fa-bell"></i>
                             </Box>
+                            <Badge/> */}
+                            <Box position="relative">
+                                <Box display="inline-block" position="relative">
+                                    <i className="fa-solid fa-bell" style={{ fontSize: '24px' }}></i>
+                                    <Box
+                                        position="absolute"
+                                        top="-6px"
+                                        right="-6px"
+                                        bg="red.500"
+                                        color="white"
+                                        borderRadius="full"
+                                        width="20px"
+                                        height="20px"
+                                        fontSize="sm"
+                                        display={notification.length > 0 ? 'flex' : 'none'}
+                                        alignItems="center"
+                                        justifyContent="center"
+                                    >
+                                        {notification.length}
+                                    </Box>
+                                </Box>
+                            </Box>
+
                         </MenuButton>
                         <MenuList pl={2} textColor={"black"}>
                             {!notification.length && "No New Messages"}
