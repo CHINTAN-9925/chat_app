@@ -51,3 +51,7 @@ export const isLastMessage = (messages:any, i:number, userId:any) => {
 export const isSameUser = (messages:any, m:any, i:any) => {
     return i > 0 && messages[i - 1].sender._id === m.sender._id;
 };
+
+export const notificationLength = (messages:any) => {
+    
+}

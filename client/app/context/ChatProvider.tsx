@@ -12,6 +12,7 @@ const ChatProvider = ({ children }: Props) => {
     const [user, setUser] = useState({});
     const [selectedChat, setSelectedChat] = useState();
     const [chatState, setChatState] = useState<Array<any>>([]);
+    const [notification, setNotification] = useState<Array<any>>([]);
     const router = useRouter()
 
     useEffect(() => {
@@ -23,7 +24,7 @@ const ChatProvider = ({ children }: Props) => {
     }, [router])
 
     return (
-        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chatState, setChatState }}>
+        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chatState, setChatState, notification, setNotification }}>
             {children}
         </ChatContext.Provider>
     )

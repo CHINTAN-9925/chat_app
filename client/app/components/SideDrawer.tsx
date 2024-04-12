@@ -1,12 +1,14 @@
 import { Avatar, Box, Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChatState } from '../context/ChatProvider';
 import { headers } from '../utils';
 import ChatLoading from './ChatLoading';
 import ProfileModel from './ProfileModel';
 import UserListItem from './UserListItem';
+import { getSender } from '../utils/chatLogic';
+import NotificationBadge from 'react-notification-badge';
 
 type Props = {}
 
@@ -15,11 +17,38 @@ const SideDrawer = (props: Props) => {
     const [searchResult, setSearchResult] = useState<any>([{}]);
     const [loading, setLoading] = useState<boolean>(false);
     const [loadingChats, setloadingChats] = useState<boolean>(false);
+    const [notificationCount, setNotificationCount] = useState(0);
+
     const router = useRouter();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
 
-    const { user, setSelectedChat, chatState, setChatState } = ChatState();
+    const { user, setSelectedChat, chatState, setChatState, notification, setNotification } = ChatState();
+    // useEffect(() => {
+    //     const newNotifications = notification.filter(
+    //         (notif: any) => notif.sender._id !== user._id
+    //     );
+    //     setNotificationCount(newNotifications.length);
+    // }, [notification, user._id]);
+    // const notificationCountHandler = (noti: any) => {
+    //     // Create an array to store unique sender IDs
+    //     const uniqueSenders: string[] = [];
+
+    //     // Filter the notifications to include only unique senders
+    //     const uniqueNotifications = noti.filter((notif: any) => {
+    //         // Check if the sender ID is not already in the uniqueSenders array
+    //         if (!uniqueSenders.includes(notif.sender._id)) {
+    //             // If it's not in the array, add it and return true to include this notification
+    //             uniqueSenders.push(notif.sender._id);
+    //             return true;
+    //         }
+    //         // If the sender ID is already in the array, return false to exclude this notification
+    //         return false;
+    //     });
+
+    //     // Return the count of unique notifications
+    //     return uniqueNotifications.length;
+    // };
 
     const logoutHandler = () => {
         localStorage.removeItem("userInfo");
@@ -128,9 +157,19 @@ const SideDrawer = (props: Props) => {
                 <Box display={"flex"} gap={5} p={2} alignItems={"center"}>
                     <Menu>
                         <MenuButton>
-                            <i className="fa-solid fa-bell"></i>
+                            <NotificationBadge count={notification.length} color={"teal"} size={"sm"} />
+                            <Box>
+                                <i className="fa-solid fa-bell"></i>
+                            </Box>
                         </MenuButton>
-                        {/* <MenuList> </MenuList> */}
+                        <MenuList pl={2} textColor={"black"}>
+                            {!notification.length && "No New Messages"}
+                            {notification.map((notif: any) => (
+                                <MenuItem key={notif._id} onClick={() => { setSelectedChat(notif.chat); setNotification(notification.filter((n: any) => n !== notif)) }} >
+                                    {notif.chat.isGroupChat ? `New Message in ${notif.chat.chatName}` : `New Message from ${getSender(user, notif.chat.users)}`}
+                                </MenuItem>
+                            ))}
+                        </MenuList>
                     </Menu>
                     <Menu>
                         <MenuButton as={Button} variant={"teal"} rightIcon={<i className="fa-solid fa-chevron-down"></i>}>
